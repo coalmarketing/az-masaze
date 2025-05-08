@@ -1,18 +1,10 @@
 import Navbar from '@/app/components/Navbar';
 import ApplicationFormClient from '@/app/components/ApplicationFormClient';
 import { getAllCourses } from '@/app/types/course';
-import Footer from '@/app/components/Footer';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 
-// Pomocné typy
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-// Generování statických cest
+// Generování statických cest pro prerendering
 export async function generateStaticParams() {
   try {
     const courses = await getAllCourses();
@@ -31,19 +23,15 @@ export async function generateStaticParams() {
   }
 }
 
-// Hlavní funkce stránky
-export default async function ApplicationPage({ params }: PageProps) {
-  // Důležité: params musí být awaited před použitím jeho vlastností
-  // Zajistíme, že params je připraven
-  const safeParams = await Promise.resolve(params);
-  
-  if (!safeParams?.id) {
+// Funkce stránky s dynamickými parametry
+export default async function Page({ params }: any) {
+  if (!params?.id) {
     console.error('Chybějící ID kurzu v URL parametrech přihlášky');
     notFound();
   }
 
   try {
-    const courseId = safeParams.id;
+    const courseId = params.id;
     
     return (
       <>

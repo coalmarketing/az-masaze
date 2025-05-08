@@ -2,17 +2,9 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import CourseDetail from '../../components/CourseDetail';
-import Footer from '../../components/Footer';
 import { getCourseById, getAllCourses } from '../../types/course';
 
-// Pomocné typy
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-// Generování statických cest
+// Generování statických cest pro prerendering
 export async function generateStaticParams() {
   try {
     const courses = await getAllCourses();
@@ -31,21 +23,17 @@ export async function generateStaticParams() {
   }
 }
 
-// Hlavní funkce stránky
-export default async function CourseDetailPage({ params }: PageProps) {
-  // Důležité: params musí být awaited před použitím jeho vlastností
-  // Zajistíme, že params je připraven
-  const safeParams = await Promise.resolve(params);
-  
-  if (!safeParams?.id) {
+// Funkce stránky s dynamickými parametry
+export default async function Page({ params }: any) {
+  if (!params?.id) {
     console.error('Chybějící ID kurzu v URL parametrech');
     notFound();
   }
 
-  const courseId = parseInt(safeParams.id, 10);
+  const courseId = parseInt(params.id, 10);
   
   if (isNaN(courseId)) {
-    console.error('Neplatné ID kurzu:', safeParams.id);
+    console.error('Neplatné ID kurzu:', params.id);
     notFound();
   }
   
