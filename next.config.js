@@ -17,6 +17,8 @@ const nextConfig = {
       },
     ],
   },
+  // Nastavení statické optimalizace
+  trailingSlash: true,
 };
 
 module.exports = nextConfig; 

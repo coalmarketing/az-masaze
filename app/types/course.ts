@@ -59,7 +59,7 @@ export async function getCourseById(id: number): Promise<Course | null> {
       headers: {
         'X-AUTH-TOKEN': AUTH_TOKEN
       },
-      cache: 'no-store'
+      next: { revalidate: 3600 }
     });
     
     if (!res.ok) {
@@ -89,7 +89,7 @@ export async function getAllCourses(): Promise<Course[]> {
       headers: {
         'X-AUTH-TOKEN': AUTH_TOKEN
       },
-      cache: 'no-store'
+      next: { revalidate: 3600 }
     });
     
     if (!res.ok) {
@@ -123,7 +123,7 @@ export async function getCourseTerms(courseId: number): Promise<Term[]> {
       headers: {
         'X-AUTH-TOKEN': AUTH_TOKEN
       },
-      cache: 'no-store'
+      next: { revalidate: 3600 }
     });
     
     if (!res.ok) {
@@ -157,7 +157,7 @@ export async function getTermById(termId: number): Promise<Term | null> {
       headers: {
         'X-AUTH-TOKEN': AUTH_TOKEN
       },
-      cache: 'no-store'
+      next: { revalidate: 3600 }
     });
     
     if (!res.ok) {
@@ -187,7 +187,7 @@ export async function getAllLicences(): Promise<Licence[]> {
       headers: {
         'X-AUTH-TOKEN': AUTH_TOKEN
       },
-      cache: 'no-store'
+      next: { revalidate: 3600 }
     });
     
     if (!res.ok) {
@@ -230,5 +230,53 @@ export async function submitTermApplication(termId: number, data: ApplicationDat
   } catch (error) {
     console.error('Error submitting application:', error);
     return false;
+  }
+}
+
+// Klientské verze funkcí pro získání dat
+export async function getCourseByIdClient(id: number): Promise<Course | null> {
+  try {
+    const res = await fetch(`${API_URL}/api/courses/${id}`, {
+      headers: {
+        'X-AUTH-TOKEN': AUTH_TOKEN
+      },
+      cache: 'no-store'
+    });
+    
+    if (!res.ok) {
+      console.error(`API Error: ${res.status} ${res.statusText}`);
+      return null;
+    }
+    
+    return await res.json();
+  } catch (error) {
+    console.error('Error fetching course (client):', error);
+    return null;
+  }
+}
+
+export async function getCourseTermsClient(courseId: number): Promise<Term[]> {
+  try {
+    const res = await fetch(`${API_URL}/api/courses/${courseId}/terms`, {
+      headers: {
+        'X-AUTH-TOKEN': AUTH_TOKEN
+      },
+      cache: 'no-store'
+    });
+    
+    if (!res.ok) {
+      console.error(`API Error: ${res.status} ${res.statusText}`);
+      return [];
+    }
+    
+    const data = await res.json();
+    if (!Array.isArray(data)) {
+      console.error('API nevrátilo pole:', data);
+      return [];
+    }
+    return data;
+  } catch (error) {
+    console.error('Error fetching course terms (client):', error);
+    return [];
   }
 } 

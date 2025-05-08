@@ -4,6 +4,10 @@ import { getAllCourses } from '@/app/types/course';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 
+// Nastavení statického generování pro stránku
+export const dynamic = 'force-static';
+export const revalidate = 3600; // Revalidace stránky každou hodinu
+
 // Generování statických cest pro prerendering
 export async function generateStaticParams() {
   try {

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ApplicationForm from './ApplicationForm';
-import { getCourseById, getCourseTerms, Course, Term } from '../types/course';
+import { getCourseByIdClient, getCourseTermsClient, Course, Term } from '../types/course';
 
 type ApplicationFormClientProps = {
   courseId: string;
@@ -21,7 +21,7 @@ export default function ApplicationFormClient({ courseId }: ApplicationFormClien
     async function loadCourseAndTerm() {
       try {
         setLoading(true);
-        const courseData = await getCourseById(parseInt(courseId));
+        const courseData = await getCourseByIdClient(parseInt(courseId));
         
         if (!courseData) {
           setError('Kurz nebyl nalezen.');
@@ -30,7 +30,7 @@ export default function ApplicationFormClient({ courseId }: ApplicationFormClien
         }
         
         // Načteme termíny kurzu
-        const termsData = await getCourseTerms(parseInt(courseId));
+        const termsData = await getCourseTermsClient(parseInt(courseId));
         
         // Přidáme termíny do dat kurzu
         const courseWithTerms = { ...courseData, terms: termsData };

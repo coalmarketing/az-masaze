@@ -4,6 +4,10 @@ import Navbar from '../../components/Navbar';
 import CourseDetail from '../../components/CourseDetail';
 import { getCourseById, getAllCourses } from '../../types/course';
 
+// Nastavení statického generování pro stránku
+export const dynamic = 'force-static';
+export const revalidate = 3600; // Revalidace stránky každou hodinu
+
 // Generování statických cest pro prerendering
 export async function generateStaticParams() {
   try {
