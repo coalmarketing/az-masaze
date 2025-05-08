@@ -15,6 +15,7 @@ export interface ButtonProps {
   children: React.ReactNode;
   className?: string;
   fullWidth?: boolean;
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -26,6 +27,7 @@ const Button = ({
   children,
   className = '',
   fullWidth = false,
+  disabled = false,
 }: ButtonProps) => {
   // Základní styly pro všechny varianty tlačítek
   const baseStyles = 'font-bold inline-block text-center transition-colors duration-200';
@@ -43,8 +45,11 @@ const Button = ({
     large: 'py-4 px-8 text-lg uppercase',
   };
   
+  // Styly pro disabled
+  const disabledStyles = disabled ? 'opacity-50 cursor-not-allowed' : '';
+  
   // Spojení všech stylů
-  const buttonStyles = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${fullWidth ? 'w-full' : ''} ${className}`;
+  const buttonStyles = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${fullWidth ? 'w-full' : ''} ${disabledStyles} ${className}`;
   
   // Pokud máme odkaz, tlačítko bude jako <Link>
   if (href) {
@@ -60,6 +65,7 @@ const Button = ({
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={buttonStyles}
     >
       {children}

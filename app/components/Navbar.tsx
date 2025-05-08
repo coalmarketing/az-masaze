@@ -67,6 +67,8 @@ export default function Navbar() {
                 alt="AZ Masérská škola"
                 width={240}
                 height={80}
+                priority
+                style={{ width: 'auto', height: 'auto' }}
                 className="object-contain"
               />
             </Link>
@@ -75,7 +77,9 @@ export default function Navbar() {
           {/* Desktop navigace */}
           <div className="hidden md:flex items-center gap-8 lg:gap-24 text-lg lg:text-xl">
             {navLinks.map((link, index) => {
-              const isActive = pathname === link.href || 
+              const isActive = 
+                link.href === '/kurzy' ? pathname === '/kurzy' || pathname.startsWith('/kurzy/') :
+                pathname === link.href || 
                 (link.href === '#about' && (pathname === '/#about' || pathname === '/o-nas')) ||
                 (link.href === '#kontakt' && (pathname === '/#kontakt' || pathname === '/kontakt'));
               
@@ -110,9 +114,9 @@ export default function Navbar() {
               className="text-[#008630] mr-4"
             >
               {isMenuOpen ? (
-                <Image src="/x.svg" alt="Zavřít menu" width={40} height={40} />
+                <Image src="/x.svg" alt="Zavřít menu" width={40} height={40} style={{ width: 'auto', height: 'auto' }} />
               ) : (
-                <Image src="/Menu_icon.svg" alt="Otevřít menu" width={40} height={40} />
+                <Image src="/Menu_icon.svg" alt="Otevřít menu" width={40} height={40} style={{ width: 'auto', height: 'auto' }} />
               )}
             </button>
           </div>
@@ -122,16 +126,26 @@ export default function Navbar() {
         {isMenuOpen && (
           <div className="fixed top-0 pt-28 left-0 right-0 bg-[#ffe135] z-40 w-full h-auto">
             <div className="flex flex-col items-center gap-4 py-8 mt-12">
-              {navLinks.map((link) => (
-                <a 
-                  key={link.href}
-                  href={link.href} 
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className="text-[#008630] font-bold text-xl py-2"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = 
+                  link.href === '/kurzy' ? pathname === '/kurzy' || pathname.startsWith('/kurzy/') :
+                  pathname === link.href || 
+                  (link.href === '#about' && (pathname === '/#about' || pathname === '/o-nas')) ||
+                  (link.href === '#kontakt' && (pathname === '/#kontakt' || pathname === '/kontakt'));
+                
+                return (
+                  <a 
+                    key={link.href}
+                    href={link.href} 
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className={`text-[#008630] font-bold text-xl py-2 ${
+                      isActive ? 'font-extrabold' : ''
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
             </div>
           </div>
         )}

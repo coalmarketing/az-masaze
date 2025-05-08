@@ -82,6 +82,7 @@ export default function Hero() {
                 width={240}
                 height={80}
                 className="object-contain"
+                style={{ width: 'auto', height: 'auto' }}
               />
             </Link>
           </div>
@@ -124,9 +125,9 @@ export default function Hero() {
               className="text-[#008630] mr-4"
             >
               {isMenuOpen ? (
-                <Image src="/x.svg" alt="Zavřít menu" width={40} height={40} />
+                <Image src="/x.svg" alt="Zavřít menu" width={40} height={40} style={{ width: 'auto', height: 'auto' }} />
               ) : (
-                <Image src="/Menu_icon.svg" alt="Otevřít menu" width={40} height={40} />
+                <Image src="/Menu_icon.svg" alt="Otevřít menu" width={40} height={40} style={{ width: 'auto', height: 'auto' }} />
               )}
             </button>
           </div>
@@ -174,6 +175,7 @@ export default function Hero() {
               width={80} 
               height={50} 
               className="mt-2"
+              style={{ width: 'auto', height: 'auto' }}
             />
           </div>
         </div>

@@ -1,32 +1,60 @@
 import Navbar from '@/app/components/Navbar';
 import ApplicationFormClient from '@/app/components/ApplicationFormClient';
 import { getAllCourses } from '@/app/types/course';
+import Footer from '@/app/components/Footer';
 import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 
-// Nastavení pro dynamické parametry
-export const dynamicParams = false;
-
-// Přidání funkce pro statické parametry s opravou exportu
-export async function generateStaticParams(): Promise<{ id: string }[]> {
-  const courses = getAllCourses();
-  return courses.map((course: { id: string }) => ({
-    id: course.id,
-  }));
+// Pomocné typy
+interface PageProps {
+  params: {
+    id: string;
+  };
 }
 
-// Změněno: použití props místo destrukturování
-export default async function ApplicationPage(props: {
-  params: Promise<{ id: string }>;
-}) {
-  // Musíme awaitat params z props
-  const params = await props.params;
+// Generování statických cest
+export async function generateStaticParams() {
+  try {
+    const courses = await getAllCourses();
+    
+    if (!Array.isArray(courses)) {
+      console.error('getAllCourses nevrátilo pole:', courses);
+      return [];
+    }
+    
+    return courses.map((course) => ({
+      id: String(course.id),
+    }));
+  } catch (error) {
+    console.error('Chyba při generování statických parametrů pro přihlášku:', error);
+    return [];
+  }
+}
+
+// Hlavní funkce stránky
+export default async function ApplicationPage({ params }: PageProps) {
+  // Důležité: params musí být awaited před použitím jeho vlastností
+  // Zajistíme, že params je připraven
+  const safeParams = await Promise.resolve(params);
   
-  return (
-    <>
-      <Navbar />
-      <Suspense fallback={<div className="w-full font-montserrat"><div className="max-w-[1100px] mx-auto pt-10 pb-20 px-4">Načítání...</div></div>}>
-        <ApplicationFormClient courseId={params.id} />
-      </Suspense>
-    </>
-  );
+  if (!safeParams?.id) {
+    console.error('Chybějící ID kurzu v URL parametrech přihlášky');
+    notFound();
+  }
+
+  try {
+    const courseId = safeParams.id;
+    
+    return (
+      <>
+        <Navbar />
+        <Suspense fallback={<div className="w-full font-montserrat"><div className="max-w-[1100px] mx-auto pt-10 pb-20 px-4">Načítání...</div></div>}>
+          <ApplicationFormClient courseId={courseId} />
+        </Suspense>
+      </>
+    );
+  } catch (error) {
+    console.error('Chyba při zpracování stránky přihlášky:', error);
+    notFound();
+  }
 } 

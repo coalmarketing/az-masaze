@@ -3,35 +3,67 @@ import { notFound } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import CourseDetail from '../../components/CourseDetail';
 import Footer from '../../components/Footer';
-import { getCourseById, getAllCourses, Course } from '../../types/course';
+import { getCourseById, getAllCourses } from '../../types/course';
 
-// Nastavení pro dynamické parametry
-export const dynamicParams = false;
-
-// Přidání funkce pro statické parametry s opravou exportu
-export async function generateStaticParams(): Promise<{ id: string }[]> {
-  const courses = getAllCourses();
-  return courses.map((course: Course) => ({
-    id: course.id,
-  }));
+// Pomocné typy
+interface PageProps {
+  params: {
+    id: string;
+  };
 }
 
-// Změněno: použití props místo destrukturování
-export default async function CourseDetailPage(props: {
-  params: Promise<{ id: string }>;
-}) {
-  // Musíme awaitat params z props
-  const params = await props.params;
-  const course = getCourseById(params.id);
+// Generování statických cest
+export async function generateStaticParams() {
+  try {
+    const courses = await getAllCourses();
+    
+    if (!Array.isArray(courses)) {
+      console.error('getAllCourses nevrátilo pole:', courses);
+      return [];
+    }
+    
+    return courses.map((course) => ({
+      id: String(course.id),
+    }));
+  } catch (error) {
+    console.error('Chyba při generování statických parametrů:', error);
+    return [];
+  }
+}
 
-  if (!course) {
+// Hlavní funkce stránky
+export default async function CourseDetailPage({ params }: PageProps) {
+  // Důležité: params musí být awaited před použitím jeho vlastností
+  // Zajistíme, že params je připraven
+  const safeParams = await Promise.resolve(params);
+  
+  if (!safeParams?.id) {
+    console.error('Chybějící ID kurzu v URL parametrech');
     notFound();
   }
 
-  return (
-    <>
-      <Navbar />
-      <CourseDetail course={course} />
-    </>
-  );
+  const courseId = parseInt(safeParams.id, 10);
+  
+  if (isNaN(courseId)) {
+    console.error('Neplatné ID kurzu:', safeParams.id);
+    notFound();
+  }
+  
+  try {
+    const course = await getCourseById(courseId);
+
+    if (!course) {
+      notFound();
+    }
+
+    return (
+      <>
+        <Navbar />
+        <CourseDetail course={course} />
+      </>
+    );
+  } catch (error) {
+    console.error('Chyba při načítání kurzu:', error);
+    notFound();
+  }
 } 

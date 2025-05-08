@@ -1,22 +1,39 @@
-import React from 'react';
+'use client'
+
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Button from './Button';
-
-type Term = {
-  id: string;
-  startDate: string;
-  endDate: string;
-  location: string;
-  schedule: string;
-};
+import { Term } from '../types/course';
 
 type CourseTermsProps = {
   terms: Term[];
-  courseId?: string;
+  courseId?: number;
 };
 
+// Funkce pro formátování rozsahu dat
+function formatDateRange(fromDate: string, toDate: string): string {
+  // Parsování dat - předpokládáme formát YYYY-MM-DD z API
+  const [fromYear, fromMonth, fromDay] = fromDate.split('-').map(num => parseInt(num, 10));
+  const [toYear, toMonth, toDay] = toDate.split('-').map(num => parseInt(num, 10));
+  
+  // Formátování datumů
+  if (fromYear === toYear) {
+    return `${fromDay}. ${fromMonth}. - ${toDay}. ${toMonth}. ${fromYear}`;
+  }
+  
+  return `${fromDay}. ${fromMonth}. ${fromYear} - ${toDay}. ${toMonth}. ${toYear}`;
+}
+
 export default function CourseTerms({ terms, courseId }: CourseTermsProps) {
+  // State pro klientské renderování
+  const [isClient, setIsClient] = useState(false);
+  
+  // Po načtení na klientovi nastavíme isClient na true
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  
   return (
     <div className="w-full font-montserrat">
       <div className="max-w-[1100px] mx-auto pt-10 pb-20 px-4">
@@ -33,12 +50,18 @@ export default function CourseTerms({ terms, courseId }: CourseTermsProps) {
                     alt="Kalendář" 
                     width={35} 
                     height={35}
+                    priority
+                    style={{ width: 'auto', height: 'auto' }}
                   />
                 </div>
                 <div className="flex-grow">
-                  <p className="text-[#008630] text-xl font-bold">{term.startDate} - {term.endDate}</p>
+                  {isClient ? (
+                    <p className="text-[#008630] text-xl font-bold">{formatDateRange(term.dateFrom, term.dateTo)}</p>
+                  ) : (
+                    <p className="text-[#008630] text-xl font-bold">{term.dateFrom} - {term.dateTo}</p>
+                  )}
                   <h3 className="text-black text-2xl font-bold mt-1">{term.location}</h3>
-                  <p className="text-black mt-1">{term.schedule}</p>
+                  <p className="text-black mt-1">{term.note}</p>
                 </div>
                 <Link href={courseId ? `/kurzy/${courseId}/prihlaska?termId=${term.id}` : '#'}>
                   <Image 
@@ -46,6 +69,8 @@ export default function CourseTerms({ terms, courseId }: CourseTermsProps) {
                     alt="Šipka" 
                     width={44} 
                     height={44}
+                    priority
+                    style={{ width: 'auto', height: 'auto' }}
                   />
                 </Link>
               </div>
@@ -59,13 +84,19 @@ export default function CourseTerms({ terms, courseId }: CourseTermsProps) {
                     width={20} 
                     height={20} 
                     className="mr-4"
+                    priority
+                    style={{ width: 'auto', height: 'auto' }}
                   />
                   <div className='w-full'>
                     <div className="flex justify-between mb-1">
-                      <p className="text-[#008630] text-xl font-bold w-1/2">{term.startDate} - {term.endDate}</p>
+                      {isClient ? (
+                        <p className="text-[#008630] text-xl font-bold w-1/2">{formatDateRange(term.dateFrom, term.dateTo)}</p>
+                      ) : (
+                        <p className="text-[#008630] text-xl font-bold w-1/2">{term.dateFrom} - {term.dateTo}</p>
+                      )}
                       <p className="text-black text-xl font-bold w-1/2 text-left">{term.location}</p>
                     </div>
-                    <p className="text-black text-sm mt-1">{term.schedule}</p>
+                    <p className="text-black text-sm mt-1">{term.note}</p>
                   </div>
                 </div>
                 

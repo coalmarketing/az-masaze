@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Course, Term } from '../types/course';
+import { Course, Term, ApplicationData, submitTermApplication } from '../types/course';
 import Button from './Button';
 
 type ApplicationFormProps = {
@@ -11,11 +11,20 @@ type ApplicationFormProps = {
   term: Term;
 };
 
+// Funkce pro převod data do formátu "D. M." bez počátečních nul
+function formatShortDate(dateString: string): string {
+  const [year, month, day] = dateString.split('-');
+  // Odstranění počátečních nul
+  const dayWithoutZero = day.replace(/^0+/, '');
+  const monthWithoutZero = month.replace(/^0+/, '');
+  return `${dayWithoutZero}. ${monthWithoutZero}.`;
+}
+
 export default function ApplicationForm({ course, term }: ApplicationFormProps) {
   const [formData, setFormData] = useState({
     title: '',
-    firstName: '',
-    lastName: '',
+    name: '',
+    surname: '',
     birthDate: '',
     street: '',
     city: '',
@@ -27,6 +36,8 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -36,11 +47,40 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Zde by byla logika pro odeslání formuláře na server
-    console.log('Odesláno:', formData);
-    setSubmitted(true);
+    setSubmitting(true);
+    setError(null);
+    
+    try {
+      // Příprava dat pro API podle struktury v Postman kolekci
+      const applicationData: ApplicationData = {
+        title: formData.title,
+        name: formData.name,
+        surname: formData.surname,
+        birthDate: formData.birthDate,
+        email: formData.email,
+        phone: formData.phone,
+        address: {
+          street: formData.street,
+          city: formData.city,
+          postalCode: formData.postalCode
+        }
+      };
+      
+      const success = await submitTermApplication(term.id, applicationData);
+      
+      if (success) {
+        setSubmitted(true);
+      } else {
+        setError('Nastala chyba při odesílání přihlášky. Zkuste to prosím znovu.');
+      }
+    } catch (error) {
+      console.error('Chyba při odesílání přihlášky:', error);
+      setError('Nastala neočekávaná chyba. Zkuste to prosím znovu.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -56,17 +96,15 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
         <div className="w-full">
           <div className="text-center mb-10">
             <h1 className="text-[#008630] text-2xl font-regular mb-2">Vaše přihláška na</h1>
-            <h2 className="text-[#008630] text-3xl font-bold mb-4 uppercase">{course.title}</h2>
-            <h3 className="text-[#008630] text-2xl font-bold mb-1">{term.startDate} - {term.endDate}</h3>
-            <p className="text-black text-md">vždy {term.schedule}</p>
+            <h2 className="text-[#008630] text-3xl font-bold mb-4 uppercase">{course.name || course.title || 'Bez názvu'}</h2>
+            <h3 className="text-[#008630] text-3xl font-bold mb-4">
+              {formatShortDate(term.dateFrom)} - {formatShortDate(term.dateTo)} {new Date(term.dateTo).getFullYear()}
+            </h3>
+            <p className="text-black text-md mb-8">vždy so + ne (9:00 - 18:00), 2x pá (16:00 - 21:00)</p>
             
-            <div className="mt-8">
-              <h3 className="text-black text-lg font-bold">Místo konání:</h3>
-              <p className="text-black text-xl font-bold">{term.location}</p>
-              <p className="text-black text-sm mt-1">
-                ZŠ Česká Třebová, Ústecká 160, (Na Parníku),<br />
-                560 02 Česká Třebová
-              </p>
+            <div>
+              <h3 className="text-black text-2xl font-bold mb-1">Místo konání:</h3>
+              <p className="text-black text-3xl font-bold">{term.location}</p>
             </div>
           </div>
 
@@ -78,6 +116,12 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="w-full max-w-[700px] mx-auto">
+              {error && (
+                <div className="bg-red-50 text-red-700 p-4 rounded-lg mb-6">
+                  {error}
+                </div>
+              )}
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div>
                   <input
@@ -87,14 +131,15 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
                     value={formData.title}
                     onChange={handleChange}
                     className="w-full border border-[#008630] p-3 text-[#008630] placeholder:text-[#008630]"
+                    required
                   />
                 </div>
                 <div>
                   <input
                     type="text"
-                    name="firstName"
+                    name="name"
                     placeholder="Jméno* (s diakritikou)"
-                    value={formData.firstName}
+                    value={formData.name}
                     onChange={handleChange}
                     required
                     className="w-full border border-[#008630] p-3 text-[#008630] placeholder:text-[#008630]"
@@ -106,9 +151,9 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
                 <div>
                   <input
                     type="text"
-                    name="lastName"
+                    name="surname"
                     placeholder="Příjmení* (s diakritikou)"
-                    value={formData.lastName}
+                    value={formData.surname}
                     onChange={handleChange}
                     required
                     className="w-full border border-[#008630] p-3 text-[#008630] placeholder:text-[#008630]"
@@ -118,7 +163,7 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
                   <input
                     type="text"
                     name="birthDate"
-                    placeholder="Datum narození*"
+                    placeholder="Datum narození* (RRRR-MM-DD)"
                     value={formData.birthDate}
                     onChange={handleChange}
                     required
@@ -246,8 +291,9 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
                 <Button 
                   type="submit" 
                   size="large"
+                  disabled={submitting}
                 >
-                  Odeslat
+                  {submitting ? 'Odesílám...' : 'Odeslat'}
                 </Button>
               </div>
             </form>

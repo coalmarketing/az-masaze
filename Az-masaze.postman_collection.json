@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "2dd199d3-e5eb-4c78-81d2-623986150f0b",
+		"name": "Az-masaze",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8782463"
+	},
+	"item": [
+		{
+			"name": "List licence",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/licences/list",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"licences",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List course",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/courses/list",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"courses",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Course detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/courses/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"courses",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Course terms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/courses/1/terms",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"courses",
+						"1",
+						"terms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Term detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/terms/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"terms",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Term application",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"title\": \"ing\",\r\n    \"name\" : \"servác\",\r\n    \"surname\": \"bonifác\",\r\n    \"birthDate\": \"1920-11-20\",\r\n    \"email\": \"servac@bonifac.cz\",\r\n    \"phone\": \"72136387\",\r\n    \"address\": {\r\n        \"street\": \"asd asd\",\r\n        \"city\": \"Praha\",\r\n        \"postalCode\": \"5300 6\"\r\n    }\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/terms/2/application",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"terms",
+						"2",
+						"application"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "146bc54efbd8fa13e1a728c4097c8451dbc60949bb0ea189afaba77306ee6ba7",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "X-AUTH-TOKEN",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://admin.az-masaze.cz",
+			"type": "string"
+		}
+	]
+}

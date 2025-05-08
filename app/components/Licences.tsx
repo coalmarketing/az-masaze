@@ -1,17 +1,34 @@
-import Image from 'next/image';
-import React from 'react';
-import Button from './Button';
+'use client'
 
-const licenceItems = [
-  "Autorizace 2023-28 A",
-  "Autorizace 2023-28 část B",
-  "Živnostenský list",
-  "Autorizace 2023-28 A",
-  "Autorizace 2023-28 část B",
-  "Živnostenský list",
-];
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import Button from './Button';
+import { Licence, getAllLicences } from '../types/course';
 
 export default function Licences() {
+  const [licences, setLicences] = useState<Licence[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchLicences = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getAllLicences();
+        console.log('Načtené licence:', data);
+        setLicences(data);
+      } catch (error) {
+        console.error('Chyba při načítání licencí:', error);
+        setError('Nepodařilo se načíst licence. Zkuste to prosím později.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLicences();
+  }, []);
+
   return (
     <div className="w-full font-montserrat">
       <div className="max-w-[1100px] mx-auto py-12 sm:py-16 md:py-24 px-4 flex flex-col lg:flex-row gap-8 lg:gap-16 xl:gap-24">
@@ -29,24 +46,39 @@ export default function Licences() {
             masérům umožňuje podnikat jako OSVČ.
           </p>
 
-          <div className="flex flex-wrap items-center justify-around gap-6 mb-8">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32">
-              <Image src="/MSMT_AlezZelinka.svg" alt="MŠMT logo" width={150} height={150} className="object-contain w-full h-full" />
+          <div className="flex flex-row justify-around items-center space-x-4 my-12 lg:hidden">
+            <div className="flex-1 flex justify-center">
+              <Image src="/MSMT_AlezZelinka.svg" alt="MŠMT logo" width={100} height={100} className="object-contain" />
             </div>
-            <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32">
-              <Image src="/AZ_razitko.png" alt="Razítko AZ" width={150} height={150} className="object-contain w-full h-full" />
+            <div className="flex-1 flex justify-center">
+              <Image src="/AZ_razitko.png" alt="Razítko AZ" width={100} height={100} className="object-contain" />
             </div>
           </div>
 
           <div className="space-y-3 md:space-y-4 mt-8 md:mt-12">
-            {licenceItems.map((title, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <a href="#" className="text-md font-bold block mr-4">{title}</a>
-                <div className="w-8 h-8 flex items-center justify-center">
-                  <Image src="/Eye_licence_icon.svg" alt="Zobrazit" width={20} height={20} />
+            {loading ? (
+              <p className="text-center py-4">Načítání licencí...</p>
+            ) : error ? (
+              <p className="text-red-500 py-4">{error}</p>
+            ) : licences && licences.length > 0 ? (
+              licences.map((licence) => (
+                <div key={licence.id} className="flex items-center justify-between">
+                  <a 
+                    href={licence.fileUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-md font-bold block mr-4"
+                  >
+                    {licence.name}
+                  </a>
+                  <div className="w-8 h-8 flex items-center justify-center">
+                    <Image src="/Eye_licence_icon.svg" alt="Zobrazit" width={20} height={20} style={{ width: 'auto', height: 'auto' }} />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-center py-4">Žádné licence k zobrazení</p>
+            )}
           </div>
           
           <div className="mt-16 mb-10 md:mt-16 flex justify-center lg:hidden">
@@ -54,8 +86,15 @@ export default function Licences() {
           </div>
         </div>
 
-        <div className="hidden lg:flex flex-col items-center justify-center">
-          <Button href="/kurzy" size="large">KURZY</Button>
+        <div className="hidden lg:flex lg:flex-col lg:items-center lg:justify-center lg:w-[400px]">
+            <Image src="/MSMT_AlezZelinka.svg" alt="MŠMT logo" width={130} height={130} className="object-contain" />
+          <div className="w-[70%] h-[2px] bg-black my-16"></div>
+          
+            <Image src="/AZ_razitko.png" alt="Razítko AZ" width={130} height={130} className="object-contain" />
+          
+          <div className="mt-24">
+            <Button href="/kurzy" size="large">KURZY</Button>
+          </div>
         </div>
       </div>
     </div>

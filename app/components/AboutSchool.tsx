@@ -40,6 +40,7 @@ export default function AboutSchool() {
                   alt="MŠMT Certifikace" 
                   width={100}
                   height={70}
+                  style={{ width: 'auto', height: 'auto' }}
                 />
               </div>
               
@@ -49,6 +50,7 @@ export default function AboutSchool() {
                   alt="Razítko Aleš Zelinka"
                   width={120}
                   height={120}
+                  style={{ width: 'auto', height: 'auto' }}
                 />
               </div>
             </div>
@@ -95,6 +97,7 @@ export default function AboutSchool() {
               width={120}
               height={80}
               className="mt-4"
+              style={{ width: 'auto', height: 'auto' }}
             />
           </div>
           
@@ -107,6 +110,7 @@ export default function AboutSchool() {
               width={140}
               height={140}
               className="mt-8"
+              style={{ width: 'auto', height: 'auto' }}
             />
           </div>
         </div>
