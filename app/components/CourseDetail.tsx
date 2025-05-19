@@ -125,13 +125,13 @@ export default function CourseDetail({ course }: CourseDetailProps) {
           <div className="flex flex-col md:flex-row gap-8">
             <div className='text-center mx-auto'>
               <h2 className="text-[#008630] text-2xl font-bold">Cena kurzu</h2>
-              <p className="text-3xl font-bold mb-4">{course.price ? course.price.toLocaleString() : '0'} Kč</p>
+              <p className="text-3xl font-bold mb-4">{course.price ? course.price.toLocaleString('cs-CZ', { maximumFractionDigits: 0 }) : '0'} Kč</p>
               
               {(course.examPriceOurSchool || course.examPriceExternal) && (
                 <>
                   <h3 className="text-[#008630] text-sm font-bold">Cena kvalifikační zkoušky</h3>
-                  <p className="text-sm">{course.examPriceOurSchool ? course.examPriceOurSchool.toLocaleString() : '0'} Kč (absolventi naší školy)</p>
-                  <p className="text-sm">{course.examPriceExternal ? course.examPriceExternal.toLocaleString() : '0'} Kč (absolventi jiné školy)</p>
+                  <p className="text-sm">{course.examPriceOurSchool ? course.examPriceOurSchool.toLocaleString('cs-CZ', { maximumFractionDigits: 0 }) : '0'} Kč (absolventi naší školy)</p>
+                  <p className="text-sm">{course.examPriceExternal ? course.examPriceExternal.toLocaleString('cs-CZ', { maximumFractionDigits: 0 }) : '0'} Kč (absolventi jiné školy)</p>
                 </>
               )}
             </div>

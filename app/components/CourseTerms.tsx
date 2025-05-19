@@ -67,10 +67,10 @@ export default function CourseTerms({ terms, courseId }: CourseTermsProps) {
                   <Image 
                     src="/Arrow_right_yellow.svg" 
                     alt="Šipka" 
-                    width={44} 
-                    height={44}
+                    width={40} 
+                    height={40}
                     priority
-                    style={{ width: 'auto', height: 'auto' }}
+                    className='min-w-[40px] min-h-[40px] w-[40px] h-[40px]'
                   />
                 </Link>
               </div>
@@ -104,12 +104,11 @@ export default function CourseTerms({ terms, courseId }: CourseTermsProps) {
                   {courseId ? (
                     <Button 
                       href={`/kurzy/${courseId}/prihlaska?termId=${term.id}`}
-                      size="small"
                     >
                       PŘIHLÁSIT SE
                     </Button>
                   ) : (
-                    <Button size="small">
+                    <Button>
                       PŘIHLÁSIT SE
                     </Button>
                   )}

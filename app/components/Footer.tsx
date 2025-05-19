@@ -106,7 +106,7 @@ export default function Footer() {
         {/* Sociální sítě */}
         <div>
           <h3 className="text-[#008630] font-bold mb-1">Sledujte nás :)</h3>
-          <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+          <Link href="https://www.facebook.com/profile.php?id=100057228649193" target="_blank" rel="noopener noreferrer">
             <Image 
               src="/facebook_icon.svg" 
               alt="Facebook" 

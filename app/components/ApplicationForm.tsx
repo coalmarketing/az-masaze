@@ -127,11 +127,10 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
                   <input
                     type="text"
                     name="title"
-                    placeholder="Titul*"
+                    placeholder="Titul"
                     value={formData.title}
                     onChange={handleChange}
                     className="w-full border border-[#008630] p-3 text-[#008630] placeholder:text-[#008630]"
-                    required
                   />
                 </div>
                 <div>
@@ -163,7 +162,7 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
                   <input
                     type="text"
                     name="birthDate"
-                    placeholder="Datum narození* (RRRR-MM-DD)"
+                    placeholder="Datum narození*"
                     value={formData.birthDate}
                     onChange={handleChange}
                     required
@@ -289,11 +288,10 @@ export default function ApplicationForm({ course, term }: ApplicationFormProps) 
               
               <div className="text-center mt-12">
                 <Button 
-                  type="submit" 
-                  size="large"
+                  type="submit"
                   disabled={submitting}
                 >
-                  {submitting ? 'Odesílám...' : 'Odeslat'}
+                  {submitting ? 'Odesílám...' : 'ODESLAT'}
                 </Button>
               </div>
             </form>

@@ -82,7 +82,7 @@ export default function Licences() {
           </div>
           
           <div className="mt-16 mb-10 md:mt-16 flex justify-center lg:hidden">
-            <Button href="/kurzy" size="large">KURZY</Button>
+            <Button href="/kurzy">KURZY</Button>
           </div>
         </div>
 
@@ -93,7 +93,7 @@ export default function Licences() {
             <Image src="/AZ_razitko.png" alt="Razítko AZ" width={130} height={130} className="object-contain" />
           
           <div className="mt-24">
-            <Button href="/kurzy" size="large">KURZY</Button>
+            <Button href="/kurzy">KURZY</Button>
           </div>
         </div>
       </div>

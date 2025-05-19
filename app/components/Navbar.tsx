@@ -79,6 +79,7 @@ export default function Navbar() {
             {navLinks.map((link, index) => {
               const isActive = 
                 link.href === '/kurzy' ? pathname === '/kurzy' || pathname.startsWith('/kurzy/') :
+                link.href === '/licence' ? pathname === '/licence' || pathname.startsWith('/licence/') :
                 pathname === link.href || 
                 (link.href === '#about' && (pathname === '/#about' || pathname === '/o-nas')) ||
                 (link.href === '#kontakt' && (pathname === '/#kontakt' || pathname === '/kontakt'));
@@ -88,8 +89,8 @@ export default function Navbar() {
                   <a 
                     href={link.href} 
                     onClick={(e) => handleNavClick(e, link.href)}
-                    className={`text-[#008630] relative font-bold hover:text-green-600 whitespace-nowrap ${
-                      isActive ? 'font-extrabold' : ''
+                    className={`text-[#008630] relative hover:text-green-600 whitespace-nowrap ${
+                      isActive ? 'font-extrabold' : 'font-medium'
                     }`}
                   >
                     {link.label}
@@ -114,7 +115,7 @@ export default function Navbar() {
               className="text-[#008630] mr-4"
             >
               {isMenuOpen ? (
-                <Image src="/x.svg" alt="Zavřít menu" width={40} height={40} style={{ width: 'auto', height: 'auto' }} />
+                <Image src="/Close_mobile_menu.svg" alt="Zavřít menu" width={40} height={40} style={{ width: 'auto', height: 'auto' }} />
               ) : (
                 <Image src="/Menu_icon.svg" alt="Otevřít menu" width={40} height={40} style={{ width: 'auto', height: 'auto' }} />
               )}
@@ -129,6 +130,7 @@ export default function Navbar() {
               {navLinks.map((link) => {
                 const isActive = 
                   link.href === '/kurzy' ? pathname === '/kurzy' || pathname.startsWith('/kurzy/') :
+                  link.href === '/licence' ? pathname === '/licence' || pathname.startsWith('/licence/') :
                   pathname === link.href || 
                   (link.href === '#about' && (pathname === '/#about' || pathname === '/o-nas')) ||
                   (link.href === '#kontakt' && (pathname === '/#kontakt' || pathname === '/kontakt'));
@@ -138,8 +140,8 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href} 
                     onClick={(e) => handleNavClick(e, link.href)}
-                    className={`text-[#008630] font-bold text-xl py-2 ${
-                      isActive ? 'font-extrabold' : ''
+                    className={`text-black text-xl py-2 ${
+                      isActive ? 'font-extrabold' : 'font-medium'
                     }`}
                   >
                     {link.label}

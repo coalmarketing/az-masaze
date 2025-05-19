@@ -4,33 +4,28 @@ import React from 'react';
 import Link from 'next/link';
 
 export type ButtonVariant = 'primary' | 'secondary';
-export type ButtonSize = 'small' | 'medium' | 'large';
 
 export interface ButtonProps {
   variant?: ButtonVariant;
-  size?: ButtonSize;
   href?: string;
   type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
-  fullWidth?: boolean;
   disabled?: boolean;
 }
 
 const Button = ({
   variant = 'primary',
-  size = 'medium',
   href,
   type = 'button',
   onClick,
   children,
   className = '',
-  fullWidth = false,
   disabled = false,
 }: ButtonProps) => {
   // Základní styly pro všechny varianty tlačítek
-  const baseStyles = 'font-bold inline-block text-center transition-colors duration-200';
+  const baseStyles = 'font-bold inline-block text-center transition-colors duration-200 w-[200px] py-3 px-6 text-xl flex items-center justify-center';
   
   // Styly variant
   const variantStyles = {
@@ -38,18 +33,11 @@ const Button = ({
     secondary: 'bg-[#008630] hover:bg-[#007025] text-white',
   };
   
-  // Styly velikostí
-  const sizeStyles = {
-    small: 'py-2 px-4 text-sm',
-    medium: 'py-3 px-6 text-base',
-    large: 'py-4 px-8 text-lg uppercase',
-  };
-  
   // Styly pro disabled
   const disabledStyles = disabled ? 'opacity-50 cursor-not-allowed' : '';
   
   // Spojení všech stylů
-  const buttonStyles = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${fullWidth ? 'w-full' : ''} ${disabledStyles} ${className}`;
+  const buttonStyles = `${baseStyles} ${variantStyles[variant]} ${disabledStyles} ${className}`;
   
   // Pokud máme odkaz, tlačítko bude jako <Link>
   if (href) {

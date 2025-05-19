@@ -99,8 +99,8 @@ export default function Hero() {
                   <a 
                     href={link.href} 
                     onClick={(e) => handleNavClick(e, link.href)}
-                    className={`text-[#008630] relative font-bold hover:text-green-600 whitespace-nowrap ${
-                      isActive ? 'font-extrabold' : ''
+                    className={`text-[#008630] relative hover:text-green-600 whitespace-nowrap ${
+                      isActive ? 'font-extrabold' : 'font-medium'
                     }`}
                   >
                     {link.label}
@@ -125,7 +125,7 @@ export default function Hero() {
               className="text-[#008630] mr-4"
             >
               {isMenuOpen ? (
-                <Image src="/x.svg" alt="Zavřít menu" width={40} height={40} style={{ width: 'auto', height: 'auto' }} />
+                <Image src="/Close_mobile_menu.svg" alt="Zavřít menu" width={40} height={40} style={{ width: 'auto', height: 'auto' }} />
               ) : (
                 <Image src="/Menu_icon.svg" alt="Otevřít menu" width={40} height={40} style={{ width: 'auto', height: 'auto' }} />
               )}
@@ -142,7 +142,7 @@ export default function Hero() {
                   key={link.href}
                   href={link.href} 
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="text-[#008630] font-bold text-xl py-2"
+                  className="text-black text-xl py-2 font-medium"
                 >
                   {link.label}
                 </a>
@@ -160,7 +160,7 @@ export default function Hero() {
           
           {/* Tlačítko */}
           <div className="mt-8 md:mt-16">
-            <Button href="/kurzy" size="large" className="px-8 md:px-24 text-lg md:text-xl">
+            <Button href="/kurzy">
               KURZY
             </Button>
           </div>
