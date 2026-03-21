@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/",
+  "/kontakt/page": "/kontakt",
+  "/licence/page": "/licence",
+  "/o-nas/page": "/o-nas",
+  "/kurzy/page": "/kurzy",
+  "/kurzy/[id]/page": "/kurzy/[id]",
+  "/kurzy/[id]/prihlaska/page": "/kurzy/[id]/prihlaska"
+}

@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/kontakt/page": "app/kontakt/page.js",
+  "/licence/page": "app/licence/page.js",
+  "/o-nas/page": "app/o-nas/page.js",
+  "/kurzy/page": "app/kurzy/page.js",
+  "/kurzy/[id]/page": "app/kurzy/[id]/page.js",
+  "/kurzy/[id]/prihlaska/page": "app/kurzy/[id]/prihlaska/page.js"
+}
