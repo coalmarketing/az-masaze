@@ -1,20 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    formats: ['image/webp'],
-    minimumCacheTTL: 60,
+    // Image optimization is not supported on Cloudflare Pages.
+    // Netlify also serves images fine without server-side optimization.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'testadmin-masaze.matfix.cz',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'admin.az-masaze.cz',
+        pathname: '/**',
+      },
     ],
   },
-  // Nastavení statické optimalizace
   trailingSlash: true,
 };
 
-module.exports = nextConfig; 
+module.exports = nextConfig;

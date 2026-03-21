@@ -1,0 +1,6 @@
+name = "az-masaze"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# OpenNext Cloudflare adapter output
+pages_build_output_dir = ".open-next/assets"
