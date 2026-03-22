@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "netlify-build": "npm install --force && next build",
-    "pages:build": "opennextjs-cloudflare build && cp .open-next/worker.js .open-next/assets/_worker.js",
+    "pages:build": "opennextjs-cloudflare build && rm -rf .open-next/assets/cloudflare .open-next/assets/middleware .open-next/assets/server-functions .open-next/assets/.build && cp .open-next/worker.js .open-next/assets/_worker.js && cp -R .open-next/cloudflare .open-next/assets/ && cp -R .open-next/middleware .open-next/assets/ && cp -R .open-next/server-functions .open-next/assets/ && cp -R .open-next/.build .open-next/assets/",
     "pages:preview": "npm run pages:build && npx wrangler pages dev .open-next/assets",
     "pages:deploy": "npm run pages:build && npx wrangler pages deploy .open-next/assets"
   },
